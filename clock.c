@@ -1646,7 +1646,10 @@ void clock_peer_delay(struct clock *c, tmv_t ppd, tmv_t req, tmv_t rx,
 {
 	c->path_delay = ppd;
 	c->nrr = nrr;
+	char command[BUFSIZ];
 
+	sprintf(command, "echo %ld >> /proc/gtp5g/Tdelay", c->path_delay.ns);
+	system(command);
 	tsproc_set_delay(c->tsproc, ppd);
 	tsproc_up_ts(c->tsproc, req, rx);
 
